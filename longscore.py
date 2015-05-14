@@ -19,6 +19,7 @@ print('longscore module loaded.')
 
 # Plot and Calc Ranksum p-Value Betwixt Two Vectors
 
+sns.set(style = "whitegrid")
 
 class Dendrite(object):
     def __init__(self,fname):
@@ -176,6 +177,7 @@ class Experiment(object):
 
 # Calculates Ranksum p-Value and Barplots Two Vectors
 def processTwoVectors(vect_one_title,vect_two_title,vect_one,vect_two):
+    plt.ion()
     mean_vect_one = np.mean(vect_one)
     std_vect_one = np.std(vect_one)/math.sqrt(len(vect_one))
     mean_vect_two = np.mean(vect_two)
@@ -188,16 +190,23 @@ def processTwoVectors(vect_one_title,vect_two_title,vect_one,vect_two):
     means = (mean_vect_one,mean_vect_two)
     stds = (std_vect_one,std_vect_two)
     ind = np.arange(N)
-    width = 0.5
+    width = 0.7
+
+    font = {'family': 'normal', 'weight': 'bold', 'size': 22}
+    mpl.rc('font',**font)
 
     fig, ax = plt.subplots()
     rects1 = ax.bar(ind,means,width,color='c',yerr=stds)
     ax.set_xticks(ind+width/2)
     ax.set_xticklabels((vect_one_title,vect_two_title))
 
+    a = np.array(vect_one)
+    b = np.array(vect_two)
+    fig2 = plt.subplots()
+    yes = sns.violinplot([a,b],inner='points',names = [vect_one_title,vect_two_title])
     font = {'family': 'normal', 'weight': 'bold', 'size': 22}
     mpl.rc('font',**font)
-    plt.show()
+
 
 #! Takes Binary Matrix, Returns (Dynamic,Additions,Eliminations)
 def calculateSynapseDynamics(binary_presence_matrix):
